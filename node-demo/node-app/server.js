@@ -1,25 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
+
+// link routes user.js
+const users = require("./routes/api/users");
 const app = express();
 
 //DB config
 const db = require("./config/keys.js").mongoURI;
 // connect to mongodb
 mongoose.connect(db).then(() => {
-    console.log('mongoDB node-vue-project link success!');
+    console.log('\nmongoDB node-vue-project link success!\n');
 }).catch((err) => {
-    console.log("mongoDB node-vue-project link failed!");
+    console.log("\nmongoDB node-vue-project link failed!\n");
     console.log(err)
 })
 
-// link routes user.js
-const users = require("./routes/api/users");
+
+// use bodyParser
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+app.use(bodyParser.json());
 
 // use routes
 app.use("/api/users", users)
 app.get('/', (req, res) => {
     res.send('hello !');
 })
+
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`server running on http://localhost:${port}/` + "\n");
