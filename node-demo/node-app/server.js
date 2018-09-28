@@ -9,11 +9,12 @@ const app = express();
 //DB config
 const db = require("./config/keys.js").mongoURI;
 // connect to mongodb
-mongoose.connect(db).then(() => {
+mongoose.connect(db, {
+    useNewUrlParser: true
+}).then(() => {
     console.log('\nmongoDB node-vue-project link success!\n');
 }).catch((err) => {
     console.log("\nmongoDB node-vue-project link failed!\n");
-    console.log(err)
 })
 
 
@@ -31,7 +32,7 @@ app.get('/', (req, res) => {
 
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`server running on http://localhost:${port}/` + "\n");
 });

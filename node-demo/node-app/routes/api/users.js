@@ -4,6 +4,7 @@ const router = express.Router();
 // 引入数据库
 const userModel = require("../../models/user.js");
 const bcrypt = require("bcryptjs");
+const gavatar = require("gravatar");
 
 
 // @route GET api/users/test
@@ -11,7 +12,7 @@ const bcrypt = require("bcryptjs");
 // @access public
 router.get('/test', (req, res) => {
     res.json({
-        msg: "login working!"
+        msg: " test"
     });
 })
 
