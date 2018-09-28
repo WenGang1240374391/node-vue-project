@@ -2,7 +2,8 @@
 const express = require("express");
 const router = express.Router();
 // 引入数据库
-const user = require("../../models/user.js")
+const userModel = require("../../models/user.js");
+const bcrypt = require("bcryptjs");
 
 
 // @route GET api/users/test
@@ -18,20 +19,25 @@ router.get('/test', (req, res) => {
 // @desc 返回请求的JSON数据
 // @access public
 router.post('/register', (req, res) => {
-    console.log(req.body)
-    user.findOne({
-        name: req.body.email
-    }).then((user) => {
-        if (user) {
+    userModel.findOne({
+        email: req.body.email
+    }).then((result) => {
+        if (result) {
             return res.status(400).json({
                 email: "email had been registered !"
             })
         } else {
-            const newUser = new user({
+            var newUser = new userModel({
                 name: req.body.name,
                 email: req.body.email,
                 // avatar,
                 password: req.body.password
+            })
+            newUser.save().then((newUser) => {
+                res.json(newUser);
+                console.log("插入数据库成功")
+            }).catch((err) => {
+                throw err;
             })
         }
     })
