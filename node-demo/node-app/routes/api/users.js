@@ -33,12 +33,20 @@ router.post('/register', (req, res) => {
                 // avatar,
                 password: req.body.password
             })
-            newUser.save().then((newUser) => {
-                res.json(newUser);
-                console.log("插入数据库成功")
-            }).catch((err) => {
-                throw err;
-            })
+            bcrypt.genSalt(10, function (err, salt) {
+                bcrypt.hash(newUser.password, salt, function (err, hash) {
+                    // Store hash in your password DB. 
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser.save().then((newUser) => {
+                        res.json(newUser);
+                        console.log("插入数据库成功")
+                    }).catch((err) => {
+                        throw err;
+                    })
+                });
+            });
+
         }
     })
 })
