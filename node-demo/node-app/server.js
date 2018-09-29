@@ -6,6 +6,7 @@ const passport = require("passport");
 
 // link routes user.js
 const users = require("./routes/api/users");
+const profiles = require("./routes/api/profiles.js");
 const app = express();
 
 //DB config
@@ -32,8 +33,9 @@ app.use(bodyParser.json());
 
 // use routes
 app.use("/api/users", users)
+app.use("/api/profiles", profiles)
 app.get('/', (req, res) => {
-    res.send('hello !');
+    res.send("aaaaaaaaaaaaaa")
 })
 
 const port = process.env.PORT || 5000;
