@@ -70,4 +70,40 @@ router.get("/:id", passport.authenticate("jwt", {
 })
 
 
+// @route GET api/profiles/edit:id
+// @desc 编辑信息接口
+// @access private
+router.post("/edit/:id", passport.authenticate("jwt", {
+    session: false
+}), (req, res) => {
+    const profileRields = {};
+    if (req.body.type) profileRields.type = req.body.type;
+    if (req.body.describe) profileRields.describe = req.body.describe;
+    if (req.body.income) profileRields.income = req.body.income;
+    if (req.body.remark) profileRields.remark = req.body.remark;
+    if (req.body.expend) profileRields.expend = req.body.expend;
+    if (req.body.cash) profileRields.cash = req.body.cash;
+    profileModel.findOneAndUpdate({
+        _id: req.params.id
+    }, {
+        $set: profileRields
+    }, {
+        new: true
+    }).then(result => {
+        if (!result) {
+            res.status(404).json({
+                msg: "没找到"
+            })
+        }
+        res.json({
+            state: "success",
+            result
+        })
+    }).catch(err => {
+        throw err
+    })
+})
+
+
+
 module.exports = router
