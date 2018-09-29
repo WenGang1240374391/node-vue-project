@@ -22,6 +22,10 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    identity: {
+        type: String,
+        required: true
+    }
 })
 const userModel = mongoose.model("user", userSchema)
 module.exports = userModel

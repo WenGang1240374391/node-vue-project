@@ -1,4 +1,3 @@
-// login and register
 const express = require("express");
 const router = express.Router();
 // 引入数据库
@@ -28,7 +27,7 @@ router.post('/register', (req, res) => {
     }).then((result) => {
         if (result) {
             return res.status(400).json({
-                email: "email had been registered !"
+                email: "email has been registered !"
             })
         } else {
             var avatar = gravatar.url(req.body.email, {
@@ -40,7 +39,8 @@ router.post('/register', (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 avatar,
-                password: req.body.password
+                password: req.body.password,
+                identity: req.body.identity
             })
             bcrypt.genSalt(10, function (err, salt) {
                 bcrypt.hash(newUser.password, salt, function (err, hash) {
@@ -80,7 +80,9 @@ router.post("/login", (req, res) => {
                 // jsonWebToken.sign("规则", "加密名字", "过期时间", "箭头函数")
                 const rule = {
                     id: result.id,
-                    name: result.name
+                    name: result.name,
+                    avatar: result.avatar,
+                    identity: result.identity
                 }
                 jsonWebToken.sign(rule, "secret", {
                     expiresIn: 3600
@@ -88,7 +90,7 @@ router.post("/login", (req, res) => {
                     if (err) throw err;
                     res.json({
                         msg: "success",
-                        token: token
+                        token: "Bearer " + token
                     })
                 })
             } else {
@@ -104,13 +106,17 @@ router.post("/login", (req, res) => {
 // @route get api/users/current
 // @desc return current user
 // @access private
-// router.get('/current', passport.authenticate("jwt", {
-//     session: false
-// }), (req, res) => {
-//     res.json({
-//         mas: "success"
-//     })
-// })
+router.get('/current', passport.authenticate("jwt", {
+    session: false
+}), (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        date: req.user.date,
+        identity: req.user.identity
+    })
+})
 
 
 

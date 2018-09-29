@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 const passport = require("passport");
-// require("./config/passport.js")(passport);
+
 
 // link routes user.js
 const users = require("./routes/api/users");
@@ -21,7 +21,7 @@ mongoose.connect(db, {
 
 // passport初始化
 app.use(passport.initialize())
-
+require("./config/passport.js")(passport);
 
 
 // use bodyParser
