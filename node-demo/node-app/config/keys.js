@@ -1,3 +1,4 @@
 module.exports = {
-    mongoURI: "mongodb://localhost/node-vue-project"
+    mongoURI: "mongodb://localhost/node-vue-project",
+    secret: "secret"
 }
