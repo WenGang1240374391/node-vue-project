@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.use("/api/users", users)
 app.use("/api/profiles", profiles)
 app.get('/', (req, res) => {
-    res.send("aaaaaaaaaaaaaa")
+    res.send("works!")
 })
 
 const port = process.env.PORT || 5000;
